@@ -97,6 +97,8 @@ function discoverPath() {
 	var color = 'black';
 	var width = baseWidth - index/20 + rand * thickness;
 	var height = thickness;
+	if(x < 0) x = 0;
+	if(x > window.innerWidth - width) x = window.innerWidth - width;
 	var elm = new Entity(x, y, width, height, color);
 	path.push(elm);
 }
