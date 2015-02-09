@@ -4,7 +4,7 @@
 *
 */
 
-//Intervall that will call tick.
+//Interval that will call tick.
 var interval = null;
 
 var player = null;
@@ -25,18 +25,22 @@ var index = 0;
 //The canvas.
 cv = null;
 
+
 /**
 *	Starts the game.
 *	Initializes everything.
 */
 function startGame() {
+	index = 0;
+	path = [];
 	window.onkeydown = keyDownHandler;
 	window.onkeyup = keyUpHandler;
 	generatePlayer();
 	generateInitialTunnel();
 	interval = setInterval(tick, 25);
 	cv = document.getElementById('canvas');
-	
+	document.getElementById("endgame").style.display = "none";
+	document.getElementById("endgame").style.opacity = "0";
 	//Draw the first frame.
 	drawFrame();
 }
@@ -114,10 +118,23 @@ function checkCollision() {
 		if(player.x <= path[i].x || player.x + player.width >= path[i].x + path[i].width) {
 			
 			//collision is happening.
-			console.log("your lost");
-			clearInterval(interval);
+			endGame();
+			
 		}
 	}
+}
+
+/**
+*	Ends the game and gives player the option to restart.
+*/
+function endGame() {
+	console.log("your lost");
+	clearInterval(interval);
+	var screen = document.createElement("div");
+	document.getElementById("endgame").style.display = "block";
+	document.getElementById("endgame").style.opacity = "1";
+	document.getElementById('eg-distance').innerHTML = index;
+	document.getElementById("play-again").onclick = startGame;
 }
 
 /**
