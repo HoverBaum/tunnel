@@ -235,7 +235,9 @@ function mouseMoveHandler(e) {
 function translateMouse(e) {
 	if(e.x < player.x) {
 		player.left = true;
+		player.right = false;
 	} else {
 		player.right = true;
+		player.left = false;
 	}
 }
