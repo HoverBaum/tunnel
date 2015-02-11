@@ -25,6 +25,8 @@ var index = 0;
 //The canvas.
 cv = null;
 
+//Remember if mouse is down or not.
+var mouseDown = false;
 
 /**
 *	Starts the game.
@@ -39,6 +41,9 @@ function startGame() {
 	generateInitialTunnel();
 	interval = setInterval(tick, 25);
 	cv = document.getElementById('canvas');
+	window.onmousedown = mouseDownHandler;
+	window.onmouseup = mouseUpHandler;
+	window.onmousemove = mouseMoveHandler;
 	document.getElementById("endgame").style.display = "none";
 	document.getElementById("endgame").style.opacity = "0";
 	//Draw the first frame.
@@ -204,5 +209,33 @@ function keyUpHandler(e) {
 		player.left = false;
  	}else if(e.keyCode === 68 || e.keyCode === 39) {
 		player.right = false;
+	}
+}
+function mouseDownHandler(e) {
+	if(e.target !== cv) return false;
+	mouseDown = true;
+	translateMouse(e);
+	console.log(e);
+}
+function mouseUpHandler(e) {
+	if(e.target !== cv) return false;
+	mouseDown = false;
+	player.left = false;
+	player.right = false;
+}
+function mouseMoveHandler(e) {
+	if(e.target !== cv) return false;
+	if(!mouseDown) return false;
+	translateMouse(e);
+}
+
+/**
+*	Translates mouse position into right or left movement.
+*/	
+function translateMouse(e) {
+	if(e.x < player.x) {
+		player.left = true;
+	} else {
+		player.right = true;
 	}
 }
