@@ -27,6 +27,7 @@ cv = null;
 
 //Remember if mouse is down or not.
 var mouseDown = false;
+var touching = false;
 
 /**
 *	Starts the game.
@@ -44,6 +45,9 @@ function startGame() {
 	window.onmousedown = mouseDownHandler;
 	window.onmouseup = mouseUpHandler;
 	window.onmousemove = mouseMoveHandler;
+	cv.ontouchmove = touchMoveHandler;
+	cv.ontouchstart = touchStartHandler;
+	cv.ontoughend = touchEndHandler;
 	document.getElementById("endgame").style.display = "none";
 	document.getElementById("endgame").style.opacity = "0";
 	//Draw the first frame.
@@ -215,7 +219,6 @@ function mouseDownHandler(e) {
 	if(e.target !== cv) return false;
 	mouseDown = true;
 	translateMouse(e);
-	console.log(e);
 }
 function mouseUpHandler(e) {
 	if(e.target !== cv) return false;
@@ -228,12 +231,25 @@ function mouseMoveHandler(e) {
 	if(!mouseDown) return false;
 	translateMouse(e);
 }
+function touchStartHandler() {
+	touching = true;
+}
+function touchEndHandler() {
+	touching = false;
+}
+function touchMoveHandler(e) {
+	if(e.target !== cv) return false;
+	if(!touching) return false;
+	e.x = e.touches[0].clientX;
+	e.y = e.touches[0].clientY;
+	translateMouse(e);
+}
 
 /**
 *	Translates mouse position into right or left movement.
 */	
 function translateMouse(e) {
-	if(e.x < player.x) {
+	if(e.x < player.x + player.width/2) {
 		player.left = true;
 		player.right = false;
 	} else {
