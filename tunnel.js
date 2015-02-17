@@ -42,9 +42,6 @@ function startGame() {
 	generateInitialTunnel();
 	interval = setInterval(tick, 25);
 	cv = document.getElementById('canvas');
-	//window.onmousedown = mouseDownHandler;
-	//window.onmouseup = mouseUpHandler;
-	//window.onmousemove = mouseMoveHandler;
 	cv.ontouchmove = touchMoveHandler;
 	cv.ontouchstart = touchStartHandler;
 	cv.ontouchend = touchEndHandler;
@@ -216,22 +213,6 @@ function keyUpHandler(e) {
 		player.right = false;
 	}
 }
-function mouseDownHandler(e) {
-	if(e.target !== cv) return false;
-	mouseDown = true;
-	translateMouse(e);
-}
-function mouseUpHandler(e) {
-	if(e.target !== cv) return false;
-	mouseDown = false;
-	player.left = false;
-	player.right = false;
-}
-function mouseMoveHandler(e) {
-	if(e.target !== cv) return false;
-	if(!mouseDown) return false;
-	translateMouse(e);
-}
 function touchStartHandler(e) {
 	touching = true;
 	translateTouch(e);
@@ -247,17 +228,12 @@ function touchMoveHandler(e) {
 	translateTouch(e);
 }
 
+/**
+*	Translates touch position into left and right movement.
+*/
 function translateTouch(e) {
 	e.x = e.touches[0].pageX;
-	translateMouse(e);
-}
-
-/**
-*	Translates mouse position into right or left movement.
-*/	
-function translateMouse(e) {
 	var center = player.x + player.width/2;
-	console.log(e.x + " " + player.x);
 	if(e.x < center) {
 		player.left = true;
 		player.right = false;
